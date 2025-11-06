@@ -6,6 +6,9 @@ import type { Transaction } from "@/lib/types";
 import { Trash2Icon } from "lucide-react";
 import Button from "./ui/Button";
 import Badge from "./ui/Badge";
+import Modal from "./ui/Modal";
+import useModalState from "@/hooks/useModalState";
+import { useState } from "react";
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -16,6 +19,9 @@ export default function TransactionList({
   transactions,
   onDelete,
 }: TransactionListProps) {
+  const { openModal, closeModal, isOpen } = useModalState();
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
   return (
     <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
       <div className="p-6 border-b border-slate-200">
@@ -51,12 +57,16 @@ export default function TransactionList({
               {transactions.map((transaction) => (
                 <tr
                   key={transaction.id}
-                  className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                  onClick={() => {
+                    openModal();
+                    setSelectedTransaction(transaction);
+                  }}
+                  className="border-b border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   <td className="py-3  text-slate-600 text-xs">
                     {transaction.id.slice(0, 8)}
                   </td>
-                  <td className="py-3  text-slate-900">
+                  <td className="py-3  text-slate-900 max-w-[100px] truncate pr-3">
                     {transaction.description}
                   </td>
                   <td className="py-3  font-semibold text-slate-900">
@@ -93,13 +103,17 @@ export default function TransactionList({
             <div
               key={transaction.id}
               className="border border-slate-200 rounded-lg p-4 space-y-2"
+              onClick={() => {
+                setSelectedTransaction(transaction);
+                openModal();
+              }}
             >
               <p className="text-xs text-slate-500">
                 ID: {transaction.id.slice(0, 8)}
               </p>
               <div className="flex justify-between items-start gap-2">
                 <div className="flex-1">
-                  <p className="font-semibold text-slate-900">
+                  <p className="font-semibold text-slate-900 max-w-[200px] truncate">
                     {transaction.description}
                   </p>
                   <p className="text-xs text-slate-500">
@@ -107,7 +121,10 @@ export default function TransactionList({
                   </p>
                 </div>
                 <Button
-                  onClick={() => onDelete(transaction.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(transaction.id);
+                  }}
                   variant="ghost"
                 >
                   <Trash2Icon className="w-4 h-4 cursor-pointer text-red-500" />
@@ -127,6 +144,55 @@ export default function TransactionList({
           ))}
         </div>
       </div>
+
+      <Modal
+        open={isOpen && selectedTransaction !== null}
+        onClose={() => {
+          closeModal();
+          setSelectedTransaction(null);
+        }}
+        title="Transaction Details"
+        contentClassName="!max-w-lg"
+      >
+        <div className="flex flex-col gap-4">
+          <div>
+            <p className="text-sm text-slate-600 mb-2 font-medium">Amount</p>
+            <p className=" text-slate-900 break-all">
+              NGN {formatCurrency(selectedTransaction?.amount as number)}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm text-slate-600 mb-2 font-medium">
+              Transaction ID
+            </p>
+            <p className=" text-slate-900 break-all">
+              {selectedTransaction?.id}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-600 mb-2 font-medium">Type</p>
+            <p className=" text-slate-900 break-all">
+              {selectedTransaction?.type === "credit" ? "Credit" : "Debit"}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-600 mb-2 font-medium">
+              Description:
+            </p>
+            <p className=" text-slate-900 break-all">
+              {selectedTransaction?.description}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm text-slate-600 mb-2 font-medium">Date</p>
+            <p className=" text-slate-900 break-all">
+              {formatDate(selectedTransaction?.date as string)}
+            </p>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
