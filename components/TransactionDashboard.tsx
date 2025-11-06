@@ -9,6 +9,8 @@ import TransactionFilters from "./TransactionFilters";
 import { useTransactions } from "@/hooks/useTransactions";
 import Button from "./ui/Button";
 import { Download } from "lucide-react";
+import Modal from "./ui/Modal";
+import useModalState from "@/hooks/useModalState";
 
 export default function TransactionDashboard() {
   const { transactions, addTransaction, deleteTransaction } = useTransactions();
@@ -16,7 +18,8 @@ export default function TransactionDashboard() {
   const [filterType, setFilterType] = useState<"all" | "credit" | "debit">(
     "all"
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { openModal, closeModal, isOpen } = useModalState();
 
   const filteredTransactions =
     filterType === "all"
@@ -48,7 +51,7 @@ export default function TransactionDashboard() {
           />
 
           <div className="flex flex-col gap-2 w-full sm:w-auto sm:flex-row">
-            <Button onClick={() => setIsModalOpen(true)} variant="primary">
+            <Button onClick={openModal} variant="primary">
               + Add Transaction
             </Button>
 
@@ -81,35 +84,20 @@ export default function TransactionDashboard() {
         )}
       </div>
 
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 bg-[#000000a3] flex items-center justify-center p-4 z-50"
-          onClick={() => setIsModalOpen(false)}
-        >
-          <div
-            className="bg-white rounded-lg shadow-lg max-w-md w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-6 border-b border-slate-200">
-              <h2 className="text-2xl font-bold text-slate-900">
-                Add New Transaction
-              </h2>
-              <p className="text-slate-600 mt-1">
-                Enter the details of your transaction
-              </p>
-            </div>
-            <div className="p-6">
-              <TransactionForm
-                onSubmit={(t) => {
-                  addTransaction(t);
-                  setIsModalOpen(false);
-                }}
-                onCancel={() => setIsModalOpen(false)}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        open={isOpen}
+        onClose={closeModal}
+        title="Add New Transaction"
+        subTitle="Enter the details of your transaction"
+      >
+        <TransactionForm
+          onSubmit={(t) => {
+            addTransaction(t);
+            closeModal();
+          }}
+          onCancel={closeModal}
+        />
+      </Modal>
     </>
   );
 }
