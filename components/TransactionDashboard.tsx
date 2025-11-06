@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionsList";
 import TransactionStats from "./TransactionsOverviewStats";
@@ -22,10 +22,12 @@ export default function TransactionDashboard() {
 
   const { openModal, closeModal, isOpen } = useModalState();
 
-  const filteredTransactions =
-    filterType === "all"
-      ? transactions
-      : transactions.filter((t) => t.type === filterType);
+  const filteredTransactions = useMemo(() => {
+    if (filterType === "all") {
+      return transactions;
+    }
+    return transactions.filter((t) => t.type === filterType);
+  }, [filterType, transactions]);
 
   const handleExportCSV = () => {
     exportToCSV(filteredTransactions, "transactions");
