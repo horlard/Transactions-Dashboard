@@ -1,5 +1,8 @@
+"use client";
+
+import { PropsWithChildren, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
-import { PropsWithChildren } from "react";
 
 interface ModalProps {
   open: boolean;
@@ -17,15 +20,25 @@ export default function Modal({
   contentClassName,
   children,
 }: PropsWithChildren<ModalProps>) {
-  return open ? (
+  const [mounted, setMounted] = useState(false);
+  const [portalEl, setPortalEl] = useState<Element | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    setPortalEl(document.getElementById("modal-root") || document.body);
+  }, []);
+
+  if (!mounted || !open || !portalEl) return null;
+
+  const modalContent = (
     <div
       className="fixed inset-0 bg-[#000000a3] flex items-center justify-center p-4 z-50"
-      onClick={() => onClose()}
+      onClick={onClose}
     >
       <div
         className={cn(
-          contentClassName,
-          "bg-white rounded-lg shadow-lg max-w-md w-full"
+          "bg-white rounded-lg shadow-lg max-w-md w-full",
+          contentClassName
         )}
         onClick={(e) => e.stopPropagation()}
       >
@@ -36,5 +49,7 @@ export default function Modal({
         <div className="p-6">{children}</div>
       </div>
     </div>
-  ) : null;
+  );
+
+  return createPortal(modalContent, portalEl);
 }
