@@ -146,7 +146,7 @@ export default function TransactionList({
       </div>
 
       <Modal
-        open={isOpen && selectedTransaction !== null}
+        open={isOpen && !!selectedTransaction}
         onClose={() => {
           closeModal();
           setSelectedTransaction(null);
