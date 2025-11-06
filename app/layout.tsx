@@ -21,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans antialiased`}>
         <TransactionsProvider>{children}</TransactionsProvider>
+        <div id="modal-root"></div>
       </body>
     </html>
   );
