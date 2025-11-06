@@ -38,9 +38,26 @@ export function useTransactions() {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
   };
 
+  const editTransaction = (
+    id: string,
+    updatedFields: Partial<Omit<Transaction, "id">>
+  ) => {
+    setTransactions((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              ...updatedFields,
+            }
+          : t
+      )
+    );
+  };
+
   return {
     transactions,
     addTransaction,
     deleteTransaction,
+    editTransaction,
   };
 }
