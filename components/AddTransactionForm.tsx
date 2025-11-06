@@ -4,6 +4,12 @@ import { Transaction } from "@/lib/types";
 import type React from "react";
 
 import { useState } from "react";
+import Button from "./ui/Button";
+import Input from "./ui/InputField";
+import Textarea from "./ui/Textarea";
+import { NumericFormat } from "react-number-format";
+
+import SelectField from "./ui/SelectField";
 
 interface TransactionFormProps {
   onSubmit: (transaction: Omit<Transaction, "id">) => void;
@@ -60,90 +66,60 @@ export default function TransactionForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-semibold text-slate-900 mb-2">
-            Amount
-          </label>
-          <input
-            type="number"
+          <NumericFormat
+            customInput={Input}
+            label="Amount (NGN)"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onValueChange={(values) => setAmount(values.value)}
             placeholder="0.00"
-            step="0.01"
-            min="0"
-            className={`w-full px-3 py-2 border rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              errors.amount ? "border-red-500" : "border-slate-300"
-            }`}
+            thousandSeparator=","
+            allowLeadingZeros={false}
+            error={errors.amount}
           />
-          {errors.amount && (
-            <p className="text-red-600 text-sm mt-1">{errors.amount}</p>
-          )}
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-slate-900 mb-2">
-            Type
-          </label>
-          <select
+          <SelectField
+            label="Type"
             value={type}
             onChange={(e) => setType(e.target.value as "credit" | "debit")}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-          >
-            <option value="credit">Credit (Income)</option>
-            <option value="debit">Debit (Expense)</option>
-          </select>
+            error={errors.type}
+            options={[
+              { value: "credit", label: "Credit (Income)" },
+              { value: "debit", label: "Debit (Expense)" },
+            ]}
+          />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-slate-900 mb-2">
-            Date
-          </label>
-          <input
+          <Input
+            label="Date"
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              errors.date ? "border-red-500" : "border-slate-300"
-            }`}
+            error={errors.date}
           />
-          {errors.date && (
-            <p className="text-red-600 text-sm mt-1">{errors.date}</p>
-          )}
         </div>
         <div className="md:col-span-2">
-          <label className="block text-sm font-semibold text-slate-900 mb-2">
-            Description
-          </label>
-          <input
-            type="text"
+          <Textarea
+            label="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="e.g., Salary, Groceries, Rent"
-            className={`w-full px-3 py-2 border rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              errors.description ? "border-red-500" : "border-slate-300"
-            }`}
+            placeholder="Enter transaction description"
+            error={errors.description}
           />
-          {errors.description && (
-            <p className="text-red-600 text-sm mt-1">{errors.description}</p>
-          )}
         </div>
       </div>
 
       <div className="flex gap-2 justify-end pt-4">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors"
-        >
+        <Button type="button" onClick={onCancel} variant="outline">
           Cancel
-        </button>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-        >
+        </Button>
+        <Button type="submit" variant="primary">
           Add Transaction
-        </button>
+        </Button>
       </div>
     </form>
   );
