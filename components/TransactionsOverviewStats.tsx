@@ -27,7 +27,7 @@ export default function TransactionStats({
       <MetricCard
         valueClassName="text-green-600"
         title="Total Inflow"
-        value={`NGN ${formatCurrency(totalInflow)}`}
+        value={`₦ ${formatCurrency(totalInflow)}`}
         descriptionText="Total credit transactions"
         icon={
           <div className="p-2 bg-green-100 rounded-lg">
@@ -39,7 +39,7 @@ export default function TransactionStats({
       <MetricCard
         valueClassName="text-red-600"
         title="Total Outflow"
-        value={`NGN ${formatCurrency(totalOutflow)}`}
+        value={`₦ ${formatCurrency(totalOutflow)}`}
         descriptionText="Total debit transactions"
         icon={
           <div className="p-2 bg-red-100 rounded-lg">
@@ -51,7 +51,7 @@ export default function TransactionStats({
       <MetricCard
         valueClassName={netBalance >= 0 ? "text-blue-600" : "text-red-600"}
         title="Net Balance"
-        value={`NGN ${formatCurrency(netBalance)}`}
+        value={`₦ ${formatCurrency(netBalance)}`}
         descriptionText="Inflow - Outflow"
         icon={
           <div className="p-2 bg-blue-100 rounded-lg">
