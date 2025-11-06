@@ -3,12 +3,14 @@
 import { formatCurrency } from "@/lib/currency";
 import { formatDate } from "@/lib/date";
 import type { Transaction } from "@/lib/types";
-import { Trash2Icon } from "lucide-react";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import Button from "./ui/Button";
 import Badge from "./ui/Badge";
 import Modal from "./ui/Modal";
 import useModalState from "@/hooks/useModalState";
 import { useState } from "react";
+import TransactionForm from "./TransactionForm";
+import { useTransactionsContext } from "@/context/TransactionsContext";
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -19,9 +21,21 @@ export default function TransactionList({
   transactions,
   onDelete,
 }: TransactionListProps) {
-  const { openModal, closeModal, isOpen } = useModalState();
+  const {
+    openModal: openDetailsModal,
+    closeModal: closeDetailsModal,
+    isOpen: isDetailsModalOpen,
+  } = useModalState();
+
+  const {
+    openModal: openEditModal,
+    closeModal: closeEditModal,
+    isOpen: isEditModalOpen,
+  } = useModalState();
+
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
+  const { editTransaction } = useTransactionsContext();
   return (
     <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
       <div className="p-6 border-b border-slate-200">
@@ -58,7 +72,7 @@ export default function TransactionList({
                 <tr
                   key={transaction.id}
                   onClick={() => {
-                    openModal();
+                    openDetailsModal();
                     setSelectedTransaction(transaction);
                   }}
                   className="border-b border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer"
@@ -88,6 +102,16 @@ export default function TransactionList({
                     <Button
                       onClick={(e) => {
                         e.stopPropagation();
+                        setSelectedTransaction(transaction);
+                        openEditModal();
+                      }}
+                      variant="ghost"
+                    >
+                      <PencilIcon className="w-4 h-4 cursor-pointer text-blue-500" />
+                    </Button>
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
                         onDelete(transaction.id);
                       }}
                       variant="ghost"
@@ -108,7 +132,7 @@ export default function TransactionList({
               className="border border-slate-200 rounded-lg p-4 space-y-2"
               onClick={() => {
                 setSelectedTransaction(transaction);
-                openModal();
+                openDetailsModal();
               }}
             >
               <p className="text-xs text-slate-500">
@@ -123,15 +147,28 @@ export default function TransactionList({
                     {formatDate(transaction.date)}
                   </p>
                 </div>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(transaction.id);
-                  }}
-                  variant="ghost"
-                >
-                  <Trash2Icon className="w-4 h-4 cursor-pointer text-red-500" />
-                </Button>
+
+                <div>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedTransaction(transaction);
+                      openEditModal();
+                    }}
+                    variant="ghost"
+                  >
+                    <PencilIcon className="w-4 h-4 cursor-pointer text-blue-500" />
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(transaction.id);
+                    }}
+                    variant="ghost"
+                  >
+                    <Trash2Icon className="w-4 h-4 cursor-pointer text-red-500" />
+                  </Button>
+                </div>
               </div>
               <div className="flex justify-between items-center pt-2 border-t border-slate-200">
                 <Badge
@@ -149,9 +186,9 @@ export default function TransactionList({
       </div>
 
       <Modal
-        open={isOpen && !!selectedTransaction}
+        open={isDetailsModalOpen && !!selectedTransaction}
         onClose={() => {
-          closeModal();
+          closeDetailsModal();
           setSelectedTransaction(null);
         }}
         title="Transaction Details"
@@ -195,6 +232,22 @@ export default function TransactionList({
             </p>
           </div>
         </div>
+      </Modal>
+
+      <Modal
+        open={isEditModalOpen && !!selectedTransaction}
+        onClose={closeEditModal}
+        title="Edit Transaction"
+        subTitle="Modify the details of your transaction"
+      >
+        <TransactionForm
+          onSubmit={(t) => {
+            editTransaction(selectedTransaction!.id, t);
+            closeEditModal();
+          }}
+          onCancel={closeEditModal}
+          transaction={selectedTransaction as Transaction}
+        />
       </Modal>
     </div>
   );
