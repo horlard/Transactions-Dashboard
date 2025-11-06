@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import TransactionForm from "./AddTransactionForm";
+import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionsList";
 import TransactionStats from "./TransactionsOverviewStats";
 import { exportToCSV } from "@/lib/exportUtils";
 import TransactionFilters from "./TransactionFilters";
-import { useTransactions } from "@/hooks/useTransactions";
 import Button from "./ui/Button";
 import { Download } from "lucide-react";
 import Modal from "./ui/Modal";
 import useModalState from "@/hooks/useModalState";
+import { useTransactionsContext } from "@/context/TransactionsContext";
 
 export default function TransactionDashboard() {
-  const { transactions, addTransaction, deleteTransaction } = useTransactions();
+  const { transactions, addTransaction, deleteTransaction } =
+    useTransactionsContext();
 
   const [filterType, setFilterType] = useState<"all" | "credit" | "debit">(
     "all"
