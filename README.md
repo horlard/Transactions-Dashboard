@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AfriPay Frontend Assessment – Transaction Dashboard
 
-## Getting Started
+A React + TypeScript application for managing and tracking financial transactions (credits and debits).  
+Users can add, edit, delete, filter, and export transactions with persistent storage and global state using the Context API.
 
-First, run the development server:
+No UI library used, all UIs built from scratch
+
+---
+
+## 🚀 Setup Instructions
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Component Structure
 
-## Learn More
+- **TransactionDashboard.tsx** – Main dashboard view combining all components.
+- **TransactionFormModal.tsx** – Form to add and edit transaction.
+- **TransactionsList.tsx** – Renders transaction table.
+- **TransactionsOverviewStats.tsx** – Shows credit/debit summaries.
+- **TransactionFilters.tsx** – Handles filtering logic.
+- **useTransactions.ts** – Custom hook for CRUD operations with localStorage.
+- **TransactionsContext** - Global provider using Context API
+- **Reusable UI Components** – Generic Button, Input, TextArea, Select, Badge.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design Decisions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Tailwind CSS for modern, responsive design.
+- Reusable UI components to maintain consistent style and structure.
+- Custom hook `useTransactions()` for clean, isolated transaction logic.
+- `TransactionsContext` ensures consistent state across the dashboard, lists, and forms without prop drilling.
+- CSV export via lightweight utility.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
