@@ -86,7 +86,10 @@ export default function TransactionList({
                   </td>
                   <td className="py-3  text-right">
                     <Button
-                      onClick={() => onDelete(transaction.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(transaction.id);
+                      }}
                       variant="ghost"
                     >
                       <Trash2Icon className="w-4 h-4 cursor-pointer text-red-500" />
