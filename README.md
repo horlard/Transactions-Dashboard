@@ -26,7 +26,7 @@ Then open [http://localhost:3000](http://localhost:3000)
 - **TransactionsOverviewStats.tsx** – Shows credit/debit summaries.
 - **TransactionFilters.tsx** – Handles filtering logic.
 - **useTransactions.ts** – Custom hook for CRUD operations with localStorage.
-- **TransactionsContext** - Global provider using Context API
+- **TransactionsContext** - Global provider using Context API provided by React.
 - **Reusable UI Components** – Generic Button, Input, TextArea, Select, Badge.
 
 ---
