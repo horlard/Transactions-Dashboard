@@ -22,12 +22,21 @@ export default function TransactionStats({
 
   const netBalance = totalInflow - totalOutflow;
 
+  const formatFn = (amount: number) => {
+    return formatCurrency(amount, {
+      notation: amount > 99999 ? "compact" : "standard",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      currencyDisplay: "narrowSymbol",
+    });
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <MetricCard
         valueClassName="text-green-600"
         title="Total Inflow"
-        value={`₦ ${formatCurrency(totalInflow)}`}
+        value={formatFn(totalInflow)}
         descriptionText="Total credit transactions"
         icon={
           <div className="p-2 bg-green-100 rounded-lg">
@@ -39,7 +48,7 @@ export default function TransactionStats({
       <MetricCard
         valueClassName="text-red-600"
         title="Total Outflow"
-        value={`₦ ${formatCurrency(totalOutflow)}`}
+        value={formatFn(totalOutflow)}
         descriptionText="Total debit transactions"
         icon={
           <div className="p-2 bg-red-100 rounded-lg">
@@ -51,7 +60,7 @@ export default function TransactionStats({
       <MetricCard
         valueClassName={netBalance >= 0 ? "text-blue-600" : "text-red-600"}
         title="Net Balance"
-        value={`₦ ${formatCurrency(netBalance)}`}
+        value={formatFn(netBalance)}
         descriptionText="Inflow - Outflow"
         icon={
           <div className="p-2 bg-blue-100 rounded-lg">
