@@ -7,7 +7,7 @@ import { TransactionsProvider } from "@/context/TransactionsContext";
 const _inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Afripro Edu Test - Transaction Dashboard",
+  title: "AfriPay Transactions Dashboard",
   description:
     "A simple transaction dashboard built with Next.js and TypeScript.",
 };
