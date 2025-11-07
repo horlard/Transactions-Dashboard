@@ -1,16 +1,12 @@
-type IObject = Record<string, any>;
+import { IObject } from "./types";
 
-interface ExportToCsvProps<T> {
-  data: T[];
+interface ExportToCsvProps {
+  data: IObject[];
   fileName: string;
   headers: string[];
 }
 
-export function exportToCSV<T extends IObject>({
-  data,
-  fileName,
-  headers,
-}: ExportToCsvProps<T>) {
+export function exportToCSV({ data, fileName, headers }: ExportToCsvProps) {
   const rows = data.map((t) => Object.values(t));
 
   const csvContent = [
