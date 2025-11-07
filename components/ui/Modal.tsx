@@ -42,11 +42,13 @@ export default function Modal({
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 border-b border-slate-200">
-          <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
-          {subTitle && <p className="text-slate-600 mt-1">{subTitle}</p>}
+        <div className="px-4 py-3 border-b border-slate-200">
+          <h2 className="text-xl font-bold text-slate-900">{title}</h2>
+          {subTitle && (
+            <p className="text-sm text-slate-600 mt-1">{subTitle}</p>
+          )}
         </div>
-        <div className="p-6">{children}</div>
+        <div className="p-4">{children}</div>
       </div>
     </div>
   );
