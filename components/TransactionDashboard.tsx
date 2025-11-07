@@ -38,7 +38,7 @@ export default function TransactionDashboard() {
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Transactions Dashboard
+            Transactions Dashboard (AfriPay Frontend assessment)
           </h1>
           <p className="text-sm text-slate-600">
             Manage and track your financial transactions with ease
