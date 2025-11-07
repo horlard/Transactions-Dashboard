@@ -84,7 +84,7 @@ export default function TransactionList({
                     {transaction.description}
                   </td>
                   <td className="py-3  font-semibold text-slate-900">
-                    ₦ {formatCurrency(transaction.amount)}
+                    {formatCurrency(transaction.amount)}
                   </td>
                   <td className="py-3 ">
                     <Badge
@@ -177,7 +177,7 @@ export default function TransactionList({
                   {transaction.type === "credit" ? "Credit" : "Debit"}
                 </Badge>
                 <span className="font-semibold text-slate-900">
-                  ₦ {formatCurrency(transaction.amount)}
+                  {formatCurrency(transaction.amount)}
                 </span>
               </div>
             </div>
@@ -198,7 +198,7 @@ export default function TransactionList({
           <div>
             <p className="text-sm text-slate-600 mb-2 font-medium">Amount</p>
             <p className=" text-slate-900 break-all">
-              ₦ {formatCurrency(selectedTransaction?.amount as number)}
+              {formatCurrency(selectedTransaction?.amount as number)}
             </p>
           </div>
 
