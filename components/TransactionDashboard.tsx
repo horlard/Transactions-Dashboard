@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionsList";
 import TransactionStats from "./TransactionsOverviewStats";
-import { exportToCSV } from "@/lib/exportUtils";
+import { exportToCSV } from "@/lib/export";
 import TransactionFilters from "./TransactionFilters";
 import Button from "./ui/Button";
 import { Download } from "lucide-react";
@@ -30,7 +30,12 @@ export default function TransactionDashboard() {
   }, [filterType, transactions]);
 
   const handleExportCSV = () => {
-    exportToCSV(filteredTransactions, "transactions");
+    exportToCSV({
+      data: filteredTransactions,
+      fileName:
+        filterType === "all" ? "transactions" : `transactions_${filterType}`,
+      headers: ["ID", "Description", "Amount", "Type", "Date"],
+    });
   };
 
   return (
@@ -61,6 +66,7 @@ export default function TransactionDashboard() {
             <div className="flex gap-2">
               <Button
                 onClick={handleExportCSV}
+                disabled={filteredTransactions.length === 0}
                 className="flex-1 sm:flex-none flex items-center justify-center"
                 variant="outline"
               >

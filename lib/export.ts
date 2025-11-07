@@ -1,14 +1,17 @@
-import type { Transaction } from "./types";
+type IObject = Record<string, any>;
 
-export function exportToCSV(transactions: Transaction[], fileName: string) {
-  const headers = ["ID", "Description", "Amount", "Type", "Date"];
-  const rows = transactions.map((t) => [
-    t.id,
-    t.description,
-    t.amount,
-    t.type,
-    t.date,
-  ]);
+interface ExportToCsvProps<T> {
+  data: T[];
+  fileName: string;
+  headers: string[];
+}
+
+export function exportToCSV<T extends IObject>({
+  data,
+  fileName,
+  headers,
+}: ExportToCsvProps<T>) {
+  const rows = data.map((t) => Object.values(t));
 
   const csvContent = [
     headers.join(","),
