@@ -11,6 +11,7 @@ import { Download } from "lucide-react";
 import Modal from "./ui/Modal";
 import useModalState from "@/hooks/useModalState";
 import { useTransactionsContext } from "@/context/TransactionsContext";
+import Image from "next/image";
 
 export default function TransactionDashboard() {
   const { transactions, addTransaction, deleteTransaction } =
@@ -30,10 +31,14 @@ export default function TransactionDashboard() {
   }, [filterType, transactions]);
 
   const handleExportCSV = () => {
+    const date = new Date();
+    const exportTime = `${date.toLocaleDateString()}-${date.toLocaleTimeString()}`;
     exportToCSV({
       data: filteredTransactions,
       fileName:
-        filterType === "all" ? "transactions" : `transactions_${filterType}`,
+        filterType === "all"
+          ? `transactions_${exportTime}`
+          : `transactions_${filterType}_${exportTime}`,
       headers: ["ID", "Description", "Amount", "Type", "Date"],
     });
   };
@@ -43,7 +48,14 @@ export default function TransactionDashboard() {
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Transactions Dashboard (AfriPay Frontend assessment)
+            <Image
+              src="/afripay.svg"
+              alt="AfriPay Logo"
+              width={100}
+              height={40}
+              className="mb-4"
+            />
+            Transactions Dashboard
           </h1>
           <p className="text-sm text-slate-600">
             Manage and track your financial transactions with ease
