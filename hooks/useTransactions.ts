@@ -8,7 +8,8 @@ const STORAGE_KEY = "transactions";
 
 export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved =
+      typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -21,6 +22,7 @@ export function useTransactions() {
   });
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
   }, [transactions]);
 
