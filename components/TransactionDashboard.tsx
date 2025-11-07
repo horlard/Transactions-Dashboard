@@ -47,14 +47,15 @@ export default function TransactionDashboard() {
     <>
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <div>
             <Image
               src="/afripay.svg"
               alt="AfriPay Logo"
               width={100}
-              height={40}
-              className="mb-4"
+              height={24}
             />
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Transactions Dashboard
           </h1>
           <p className="text-sm text-slate-600">
