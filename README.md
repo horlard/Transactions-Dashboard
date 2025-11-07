@@ -3,7 +3,7 @@
 A React + TypeScript application for managing and tracking financial transactions (credits and debits).  
 Users can add, edit, delete, filter, and export transactions with persistent storage and global state using the Context API.
 
-No UI library used, all UIs built from scratch
+[Demo url](https://transactions-dashboard-0o10.onrender.com/)
 
 ---
 
@@ -40,5 +40,8 @@ Then open [http://localhost:3000](http://localhost:3000)
 - CSV export via lightweight utility.
 - No UI library used
 
-Deployed url [https://transactions-dashboard-0o10.onrender.com/](https://transactions-dashboard-0o10.onrender.com/)
+---
 
+## Screenshots 
+![Dashboard](https://res.cloudinary.com/dsfbkhic2/image/upload/v1762526942/Screenshot_2025-11-07_at_15.45.55_snzjxw.png "Dashboard")
+![Add Transaction](https://res.cloudinary.com/dsfbkhic2/image/upload/v1762526942/Screenshot_2025-11-07_at_15.46.49_x4dk99.png "Add Transaction")
