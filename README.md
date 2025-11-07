@@ -38,6 +38,7 @@ Then open [http://localhost:3000](http://localhost:3000)
 - Custom hook `useTransactions()` for clean, isolated transaction logic.
 - `TransactionsContext` ensures consistent state across the dashboard, lists, and forms without prop drilling.
 - CSV export via lightweight utility.
+- No UI library used
 
-Deployed url [https://transactions-dashboard-y887.onrender.com](https://transactions-dashboard-y887.onrender.com)
+Deployed url [https://transactions-dashboard-0o10.onrender.com/](https://transactions-dashboard-0o10.onrender.com/)
 
